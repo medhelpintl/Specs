@@ -1,6 +1,6 @@
-# The CocoaPods Master Repo
+# Fork of the CocoaPods Master Repo
 
-This repository contains the public [CocoaPods](https://github.com/CocoaPods/CocoaPods) specifications.
+This repository contains just the private specs for MedHelp private Cocoapods. The other public specs normally part of this repo have been removed to avoid duplicate warnings due to the default specs repo being part of the spec repos installed on a machine.
 
 ## Links
 
