@@ -1,6 +1,8 @@
 #
 #  hAPI-SDK.podspec (a local dev pod for hAPITracker (experimental))
 #
+#  NEVER PUSH THIS VERSION TO THE PUBLIC PODSPECS REPO!! ONLY PUSH TO "MedHelp" PRIVATE REPO!
+#
 #  Be sure to run `pod spec lint hAPI-SDK.podspec` to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
@@ -15,7 +17,10 @@
 #
 
 #  Bumping from 1.0.23 to 2.0.0 since this version is the first one
-#  that requires iOS 8+ as well as use_frameworks!
+#  that requires iOS 8+ as well as use_frameworks! Eventually the contents of
+#  this podspec will be copied into the hAPI-SDK repository, with the s.source
+#  value changed to point to the hAPI-SDK Github repository.
+
 version = "2.0.0"
 
 Pod::Spec.new do |s|
@@ -88,7 +93,23 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  # s.source = { :git => "https://github.com/medhelpintl/iphone_hAPI-SDK.git", :tag => s.version.to_s }
+  # -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- 
+  #
+  #  The hAPI-SDK.podspec that exists in the iphone_hapi_sdk_library
+  #  repo is only meant for local development and should NEVER be pushed to 
+  #  the public specs repo. It should only live on the private specs repo which
+  #  should always come before the public specs repo in each Podfile, unless you
+  #  want to test the Jenkins built closed source version of the new Cocoa
+  #  Touch Framework version of hAPI-SDK. 
+  #  
+  #  As a developer works on this local version of hAPI-SDK by way of 
+  #  iphone_hapi_sdk_library, in order to get the latest version into one of the 
+  #  iOS apps, the latest commit that was pushed to the iphone_hapi_sdk_library 
+  #  repo (branch would typically be a feature branch) must be tagged with the 
+  #  version matching the version in this podspec. (20151127:AB)
+  #
+  # -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT --
+
   s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git", :tag => s.version.to_s }
 
   s.subspec 'hAPI_SDK' do |ss|
