@@ -25,7 +25,7 @@ version = "2.0.0"
 
 Pod::Spec.new do |s|
 
-  # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  #  Spec Metadata:
   #
   #  These will help people to find your library, and whilst it
   #  can feel like a chore to fill in it's definitely to your advantage. The
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
   # This custom podspec is just for internal developemnt.
   s.homepage = "https://github.com/medhelpintl/iphone_hAPI-SDK.git" # "https://github.com/medhelpintl/iphone_hapi_sdk_library"
 
-  # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  #  Spec License:
   #
   #  Licensing your code is important. See http://choosealicense.com for more info.
   #  CocoaPods will detect a license file if there is a named LICENSE*
@@ -60,8 +60,7 @@ Pod::Spec.new do |s|
 
   s.license = { :type => "MIT", :file => "LICENSE" }
   
-
-  # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  #  Author Metadata:
   #
   #  Specify the authors of the library, with email addresses. Email addresses
   #  of the authors are extracted from the SCM log. E.g. $ git log. CocoaPods also
@@ -72,9 +71,9 @@ Pod::Spec.new do |s|
   #
 
   s.author = { 'medhelp' => 'iphone@medhelp.org' }
-  
-  # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  #
+
+  #  Platform Specifics: 
+  #  
   #  If this Pod runs only on iOS or OS X, then specify the platform and
   #  the deployment target. You can optionally include the target after the platform.
   #
@@ -86,8 +85,9 @@ Pod::Spec.new do |s|
   # s.watchos.deployment_target = "2.0"
   # s.tvos.deployment_target = "9.0"
 
+  s.requires_arc = true
 
-  # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  #  Source Location:
   #
   #  Specify the location from where the source should be retrieved.
   #  Supports git, hg, bzr, svn and HTTP.
@@ -114,7 +114,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'hAPI_SDK' do |ss|
 
-    # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+    #  Source Code:
     #
     #  CocoaPods is smart about how it includes source code. For source files
     #  giving a folder will include any swift, h, m, mm, c & cpp files.
@@ -133,14 +133,15 @@ Pod::Spec.new do |s|
 
       src.source_files = 'hAPI_SDK/hAPI_SDKLib/**/*.{h,m,swift}'
 
+      src.exclude_files = 'hAPI_SDK/hAPI_SDKLib/Classes/_NotUsed/**/*.*'
+
     end
 
     # TODO: determine if we need to make certain headers private or just make
     # everything public (by continuing to comment out the next line) (20151120:AB)
     # s.public_header_files = "hAPI_SDK/hAPI_SDKLib/Classes/**/*.h"
 
-
-    # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+    #  Resources:
     #
     #  A list of resources included with the Pod. These are copied into the
     #  target bundle with a build phase script. Anything else will be cleaned.
@@ -155,7 +156,22 @@ Pod::Spec.new do |s|
 
   end
 
-  # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  # -- 3rd party libraries that are either static (.a) or composed of source files (.m/.h) that aren't Pods --
+
+  s.subspec 'Libs' do |lb|
+
+    lb.subspec 'AFNetworking' do |af|
+      af.source_files = 'hAPI_SDK/libs/AFNetworking/**/*.{h,m,c}'
+    end
+
+    lb.subspec 'JSONKit' do |js|
+      js.source_files = 'hAPI_SDK/libs/JSONKit/**/*.{h,m,c}'
+      js.requires_arc = false
+    end
+
+  end
+
+  #  Project Linking:
   #
   #  Link your library with frameworks, or libraries. Libraries do not include
   #  the lib prefix of their name.
@@ -168,13 +184,11 @@ Pod::Spec.new do |s|
   # s.libraries = "iconv", "xml2"
 
 
-  # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  #  Project Settings:
   #
   #  If your library depends on compiler flags you can set them in the xcconfig hash
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
-
-  s.requires_arc = true
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
 
