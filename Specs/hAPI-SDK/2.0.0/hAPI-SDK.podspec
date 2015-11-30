@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  s.platform            = :ios, '8.0'
+  s.platform = :ios, '8.0'
 
   #  When using multiple platforms
   # s.ios.deployment_target = "8.0"
@@ -133,13 +133,43 @@ Pod::Spec.new do |s|
 
       src.source_files = 'hAPI_SDK/hAPI_SDKLib/**/*.{h,m,swift}'
 
-      src.exclude_files = 'hAPI_SDK/hAPI_SDKLib/Classes/_NotUsed/**/*.*'
+      src.exclude_files = 'hAPI_SDK/hAPI_SDKLib/Classes/_OLD/**/*.*'
+
+      # (2015/11/29:AB)
+      # In order for the hAPI-SDK umbrella header for the development
+      # pod to not mark all headers as public, must either explicitly
+      # list the public headers in the public_header_files setting
+      # or list all the private header files in the private_header_files
+      # setting. If all headers are public, it leads to some issues
+      # where the same classname exists in both hAPITracker and hAPI-SDK
+      # (namely MHUtil).
+      #
+      # Note that those headers that aren't included in the
+      # public_header_files list will be marked as having PROJECT framework
+      # membership by default.
+      #
+      # Note that the existing framework header membership settings set in 
+      # the project itself are correct and the exported public framework
+      # has the correct headers in both the public and private header folders.
+
+      # TODO: Remove MTSampleHAPIObjC.h once framework is stable 20151129:AB
+
+      src.public_header_files = 'hAPI_SDK/hAPI_SDKLib/hAPI_SDK.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MedHelp.h', 'hAPI_SDK/hAPI_SDKLib/Classes/GlobalConstants.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHLoginManager.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHOAuthManager.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHSessionManager.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHHealthData.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHQuery.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHBatch.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHError.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHHapiOperationQueueManager.h', 'hAPI_SDK/hAPI_SDKLib/Classes/MHObject.h', 'hAPI_SDK/hAPI_SDKLib/Classes/_Framework-Examples/MTSampleHAPIObjC.h'
+
+      # src.private_header_files = ''
 
     end
 
     # TODO: determine if we need to make certain headers private or just make
     # everything public (by continuing to comment out the next line) (20151120:AB)
+    #
+    # Only those headers we're marking as public and including in the umbrella
+    # header should be public. Normal framework header memberhip is ok for the
+    # Framework aggregate target export process, but when hAPI_SDK is a local
+    # development pod, all headers become public by default, leading to some
+    # duplicate definition errors (MHUtil.h, etc.) (20151129:AB)
     # s.public_header_files = "hAPI_SDK/hAPI_SDKLib/Classes/**/*.h"
+
 
     #  Resources:
     #
@@ -158,15 +188,38 @@ Pod::Spec.new do |s|
 
   # -- 3rd party libraries that are either static (.a) or composed of source files (.m/.h) that aren't Pods --
 
+  # Note: while these lib headers are marked "project" in order
+  # to build, they won't be included with the public framework.
+  #
+  # CocoaPods will turn these into "public" headers in order
+  # for the development pod or private specs repo hosted version
+  # of hAPI-SDK to build from the source.
+
   s.subspec 'Libs' do |lb|
+
+    # TODO: Errors with `pod lib lint` and `pod spec lint` when
+    # we have subspecs for the 3rd party libraries. Copying podspec
+    # directly to private specs repo and committing is ok, but
+    # can't currently deploy via "pod repo push MedHelp hAPI-SDK.podspec". (20151129:AB)
 
     lb.subspec 'AFNetworking' do |af|
       af.source_files = 'hAPI_SDK/libs/AFNetworking/**/*.{h,m,c}'
+
+      # af.public_header_files = ''
+      # af.private_header_files = 'hAPI_SDK/libs/AFNetworking/**/*.h'
+
     end
+
+    # JSONKit will always need a separate subspec due to non-ARC
+    # requirement (20151129:AB)
 
     lb.subspec 'JSONKit' do |js|
       js.source_files = 'hAPI_SDK/libs/JSONKit/**/*.{h,m,c}'
       js.requires_arc = false
+
+      #js.public_header_files = ''
+      #js.private_header_files = 'hAPI_SDK/libs/JSONKit/**/*.h'
+
     end
 
   end
