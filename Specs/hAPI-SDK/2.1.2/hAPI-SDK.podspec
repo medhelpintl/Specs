@@ -135,9 +135,8 @@ Pod::Spec.new do |s|
 
   #s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git", :tag => s.version.to_s }
 
-  # Temporarily pointing to feature branch for Xcode 8 conversion (2016/08/25:AB)
-  # Existing apps should be using updated hAPITracker.podspec that is pinned to v2.0.5 of hAPI-SDK.
-  s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git", :branch => "feature/xcode8_6" }
+  # Existing apps should be using updated hAPITracker.podspec that is pinned to v2.1.2 of hAPI-SDK.
+  s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git" }
 
   s.subspec 'hAPI_SDK' do |ss|
 
