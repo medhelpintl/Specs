@@ -65,7 +65,7 @@
 # 
 #  Bumping to 2.2.5 for Removal of fastlane-core from Gemfile and Slather coverage improvements. (2017/05/06:AB)
 # 
-#  Bumping to 2.3.0 for changing of domain from medhelp to redurchin. (2017/08/29:RD)
+#  Bumping to 2.3.0 for changing of domain from medhelp to redurchin. (2017/08/29:RD) Also added more notes clarifying how the source should be when not doing feature development. (2017/08/29:AB)
 
 version = "2.3.0"
 
@@ -153,12 +153,26 @@ Pod::Spec.new do |s|
   #  repo (branch would typically be a feature branch) must be tagged with the 
   #  version matching the version in this podspec. (20151127:AB)
   #
+  #  If you need to develop on hAPI-SDK for a while, change s.source to point to a 
+  #  feature branch. Only apps with hAPITracker.podspec pointing to your new version
+  #  of hAPI-SDK will get that code. Once finished, be sure to deploy a new version
+  #  of this hAPI-SDK.podspec that has "tag => s.version.to_s" (20170829:AB)
+  #
+  #  If there's one thing to remember:
+  #
+  #          NEVER LEAVE s.source POINTING TO THE HEAD OF THE REPOSITORY!
+  # 
   # -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT -- IMPORTANT --
+
+  # Official versions of our apps should have a hAPITracker.podspec that is pinned to a 
+  # specific version of hAPI-SDK which has the following s.source:
 
   #s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git", :tag => s.version.to_s }
 
-  # Existing apps should be using updated hAPITracker.podspec that is pinned to v2.1.5 of hAPI-SDK.
-  s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git" }
+  # Only comment out the above, replacing it with the below for a specific feature branch
+  # you're working on. (20170829:AB)
+
+  s.source = { :git => "git@github.com:medhelpintl/iphone_hapi_sdk_library.git", :branch => "feature/red_urchin" }
 
   s.subspec 'hAPI_SDK' do |ss|
 
